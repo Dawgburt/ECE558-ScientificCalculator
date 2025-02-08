@@ -1,3 +1,17 @@
+/**
+ * Color.kt
+ *
+ * ECE 558 Scientific Calculator
+ *
+ * Defines the color scheme used in the calculator application.
+ * Includes primary, secondary, and custom colors for UI consistency.
+ *
+ * Developed for ECE 558 at Portland State University.
+ *
+ * Author: Phil Nevins (p.nevins971@gmail.com)
+ * Date: 2/8/2025
+ */
+
 package edu.pdx.pnevins.ece558.scientificcalculator.ui.color
 
 import androidx.compose.ui.graphics.Color

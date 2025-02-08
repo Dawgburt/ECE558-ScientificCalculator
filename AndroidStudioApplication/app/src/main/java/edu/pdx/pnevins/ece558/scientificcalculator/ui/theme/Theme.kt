@@ -1,3 +1,17 @@
+/**
+ * Theme.kt
+ *
+ * ECE 558 Scientific Calculator
+ *
+ * Defines the theme for the calculator application using Jetpack Compose.
+ * Supports both light and dark themes with dynamic color adaptation.
+ *
+ * Developed for ECE 558 at Portland State University.
+ *
+ * Author: Phil Nevins (p.nevins971@gmail.com)
+ * Date: 2/8/2025
+ */
+
 package edu.pdx.pnevins.ece558.scientificcalculator.ui.theme
 
 import android.os.Build

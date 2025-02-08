@@ -1,3 +1,24 @@
+/**
+ * MainActivity.kt
+ *
+ * ECE 558 Scientific Calculator
+ *
+ * This is an Android application implementing a scientific calculator
+ * using Jetpack Compose. The app supports basic arithmetic operations,
+ * square root, logarithm, and percentage calculations.
+ *
+ * Features:
+ * - Basic arithmetic operations (+, -, *, /)
+ * - Square (x^2), square root (√), logarithm (Log)
+ * - Clear and Clear History (C, CH) functionality
+ * - Displays calculation history (last 5 operations)
+ *
+ * Developed for ECE 558 at Portland State University.
+ *
+ * Author: Phil Nevins (p.nevins971@gmail.com)
+ * Date: 2/8/2025
+ */
+
 package com.example.myapplication
 
 import android.os.Bundle
