@@ -152,8 +152,8 @@ fun CalculatorScreen(navController: NavController) {
             "Cos", "7", "8", "9", "/",
             "Tan", "4", "5", "6", "+",
             "", "1", "2", "3", "-",
-            "2nd", "+/-", "0", ".", "=",
-        )
+            "", "+/-", "0", ".", "=",
+        ) // 2nd Removed - under construction
         LazyVerticalGrid(
             columns = GridCells.Fixed(5),
             horizontalArrangement = Arrangement.spacedBy(5.dp),
@@ -451,20 +451,36 @@ fun Display(input: String, result: String, operator: String, firstOperand: Strin
             .padding(16.dp),
         horizontalAlignment = Alignment.End
     ) {
-        Text(
-            text = "$firstOperand $operator $input",
-            style = TextStyle(fontSize = 30.sp, color = Color.Red), // White text
-            textAlign = TextAlign.Left,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Text(
-            text = result,
-            style = TextStyle(fontSize = 40.sp, fontWeight = FontWeight.Bold, color = Color.White), // White text
-            textAlign = TextAlign.End,
-            modifier = Modifier.fillMaxWidth()
-        )
+        // Construct dynamic display text
+        val displayText = buildString {
+            if (firstOperand.isNotEmpty()) append(firstOperand)
+            if (operator.isNotEmpty()) append(" $operator ")
+            if (input.isNotEmpty()) append(input)
+        }
+
+        // Show the expression (only if it's not empty)
+        if (displayText.isNotEmpty()) {
+            Text(
+                text = displayText,
+                style = TextStyle(fontSize = 30.sp, color = Color.Red),
+                textAlign = TextAlign.Left,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+
+        // Show result only if it's not empty
+        if (result.isNotEmpty()) {
+            Text(
+                text = if (result == "Error") "Error" else result, // Show "Error" if needed
+                style = TextStyle(fontSize = 40.sp, fontWeight = FontWeight.Bold, color = Color.White),
+                textAlign = TextAlign.End,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
+
 
 
 @Composable
