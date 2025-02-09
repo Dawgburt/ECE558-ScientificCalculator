@@ -131,12 +131,12 @@ fun CalculatorApp() {
 
         // Buttons
         val buttons = listOf(
-            "Sin", "√", "x^2", "CH", "C",
-            "Cos", "Log", "Ln", "%", "*",
-            "Tan", "7", "8", "9", "/",
-            "", "4", "5", "6", "+",
+            "<-", "√", "x^2", "CH", "C",
+            "Sin", "Log", "Ln", "%", "*",
+            "Cos", "7", "8", "9", "/",
+            "Tan", "4", "5", "6", "+",
             "", "1", "2", "3", "-",
-            "", "+/-", "0", ".", "=",
+            "2nd", "+/-", "0", ".", "=",
         )
         LazyVerticalGrid(
             columns = GridCells.Fixed(5),
@@ -148,6 +148,24 @@ fun CalculatorApp() {
                     text = button,
                     onClick = {
                         when (button) {
+
+                            "2nd" -> {
+
+                            }
+
+                            "<-" -> {
+                                if (result.isNotEmpty()) {
+                                    result = ""
+                                } else if (input.isNotEmpty()) {
+                                    input = input.dropLast(1)
+                                } else if (operator.isNotEmpty()) {
+                                    operator = operator.dropLast(1)
+                                } else if (firstOperand.isNotEmpty()) {
+                                    firstOperand = firstOperand.dropLast(1)
+                                } else result = "Error"
+                            }
+
+
                             "C" -> {
                                 input = ""
                                 result = ""
