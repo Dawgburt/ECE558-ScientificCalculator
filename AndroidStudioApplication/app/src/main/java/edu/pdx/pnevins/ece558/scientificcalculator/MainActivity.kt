@@ -19,7 +19,7 @@
  * Date: 2/8/2025
  */
 
-package com.example.myapplication
+package edu.pdx.pnevins.ece558.scientificcalculator
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -57,9 +57,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.pdx.pnevins.ece558.scientificcalculator.ui.theme.CalculatorTheme
-import edu.pdx.pnevins.ece558.scientificcalculator.ui.color.DarkBlue
+import kotlin.math.cos
+import kotlin.math.ln
 import kotlin.math.sqrt
 import kotlin.math.log10
+import kotlin.math.sin
+import kotlin.math.tan
 
 
 class MainActivity : ComponentActivity() {
@@ -117,12 +120,12 @@ fun CalculatorApp() {
 
         // Buttons
         val buttons = listOf(
-            "", "√", "", "CH", "C",
-            "", "x^2", "Log", "%", "*",
-            "", "7", "8", "9", "/",
+            "Sin", "√", "x^2", "CH", "C",
+            "Cos", "Log", "Ln", "%", "*",
+            "Tan", "7", "8", "9", "/",
             "", "4", "5", "6", "+",
             "", "1", "2", "3", "-",
-            "", "", "0", ".", "=",
+            "", "+/-", "0", ".", "=",
         )
         LazyVerticalGrid(
             columns = GridCells.Fixed(5),
@@ -140,6 +143,7 @@ fun CalculatorApp() {
                                 operator = ""
                                 firstOperand = ""
                                 calculationCompleted = false // Reset flag
+                                clearPressedOnce = true // Mark first press
                             }
 
                             "CH" -> {
@@ -160,6 +164,12 @@ fun CalculatorApp() {
                             }
 
                             "+", "-", "*", "/" -> {
+                                if(calculationCompleted){
+                                    firstOperand = result
+                                    operator = button
+                                    input = ""
+                                    calculationCompleted = false
+                                }
                                 if (input.isNotEmpty()) {
                                     operator = button
                                     firstOperand = input
@@ -168,6 +178,24 @@ fun CalculatorApp() {
                                 }
                             }
 
+                            "Sin" ->{
+                                result = (input.toDoubleOrNull()?.let { sin(it) } ?: "Error").toString()
+                                history = history + "Sin($input) = $result"
+                                calculationCompleted = true // Set flag after calculation
+                            }
+
+                            "Cos" -> {
+                                result = (input.toDoubleOrNull()?.let { cos(it) } ?: "Error").toString()
+                                history = history + "Cos($input) = $result"
+                                calculationCompleted = true // Set flag after calculation
+                            }
+
+                            "Tan" -> {
+                                result = (input.toDoubleOrNull()?.let { tan(it) } ?: "Error").toString()
+                                history = history + "Tan($input) = $result"
+                                calculationCompleted = true // Set flag after calculation
+
+                            }
 
                             "%" -> {
                                 result = (input.toDoubleOrNull()?.div(100) ?: "Error").toString()
@@ -178,6 +206,12 @@ fun CalculatorApp() {
                             "Log" -> {
                                 result = (input.toDoubleOrNull()?.let { log10(it) } ?: "Error").toString()
                                 history = history + "log($input) = $result"
+                                calculationCompleted = true // Set flag after calculation
+                            }
+
+                            "Ln" -> {
+                                result = (input.toDoubleOrNull()?.let { ln(it) } ?: "Error").toString()
+                                history = history + "ln($input) = $result"
                                 calculationCompleted = true // Set flag after calculation
                             }
 
@@ -257,9 +291,9 @@ fun Display(input: String, result: String, operator: String, firstOperand: Strin
         horizontalAlignment = Alignment.End
     ) {
         Text(
-            text = "$firstOperand $operator $input  \t   $result",
+            text = "$firstOperand $operator $input",
             style = TextStyle(fontSize = 30.sp, color = Color.Red), // White text
-            textAlign = TextAlign.End,
+            textAlign = TextAlign.Left,
             modifier = Modifier.fillMaxWidth()
         )
         Text(
@@ -275,8 +309,8 @@ fun Display(input: String, result: String, operator: String, firstOperand: Strin
 @Composable
 fun CalculatorButton(text: String, onClick: () -> Unit) {
     val buttonColor = when (text) {
-        "+", "-", "*", "/", "=", "%", "x^2", "Log", "Sqrt", "√" -> Color(0xFF00008B) // Dark Blue
-        ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" -> Color(0xFF000066) // Darker Navy Blue
+        "+", "-", "*", "/", "=", "%", "x^2", "Log", "Sqrt", "√", "Sin", "Cos", "Tan", "Ln" -> Color(0xFF00008B) // Dark Blue
+        "+/-", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" -> Color(0xFF000066) // Darker Navy Blue
         "CH", "C" -> Color(0xFF8A0707) // Blood Red
         else -> Color.Black // Default color
     }
