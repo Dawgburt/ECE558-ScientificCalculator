@@ -7,16 +7,27 @@
  * using Jetpack Compose. The app supports basic arithmetic operations,
  * square root, logarithm, and percentage calculations.
  *
+ * Chat GPT was asked to give a template for a calculator app with buttons and a + operation
+ * working that can be built on.
+ * ChatGPT was consulted for debugging and error handling.
+ *
  * Features:
  * - Basic arithmetic operations (+, -, *, /)
- * - Square (x^2), square root (√), logarithm (Log)
+ * - Square (x^2), square root (√), logarithm (Log, Ln)
+ * - Sin, Cos, Tan functions
+ * - Percentage calculation (%)
+ * - +/- sign toggle (not complete)
  * - Clear and Clear History (C, CH) functionality
  * - Displays calculation history (last 5 operations)
  *
  * Developed for ECE 558 at Portland State University.
  *
  * Author: Phil Nevins (p.nevins971@gmail.com)
- * Date: 2/8/2025
+ * Date Created: 1/25/2025
+ *
+ * Notes:
+ * 1-25-2025  PN  Project created to experiment with Jetpack Compose via templates from ChatGPT
+ * 2-8-2025  PN  Added Sin, Cos, Tan, Log, Ln, and % functions
  */
 
 package edu.pdx.pnevins.ece558.scientificcalculator
