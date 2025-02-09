@@ -241,6 +241,14 @@ fun CalculatorApp() {
                                 calculationCompleted = true // Set flag after calculation
                             }
 
+                            "+/-" -> {
+                                input = if (input.startsWith("-")) {
+                                    input.substring(1)
+                                } else {
+                                    "-$input"
+                                }
+                            }
+
                             "=" -> {
                                 if (input.isNotEmpty() && firstOperand.isNotEmpty() && operator.isNotEmpty()) {
                                     result = calculate(firstOperand, input, operator)
