@@ -67,6 +67,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import edu.pdx.pnevins.ece558.scientificcalculator.ui.theme.CalculatorTheme
 import kotlin.math.cos
 import kotlin.math.ln
@@ -74,6 +77,7 @@ import kotlin.math.sqrt
 import kotlin.math.log10
 import kotlin.math.sin
 import kotlin.math.tan
+import androidx.navigation.compose.composable
 
 
 class MainActivity : ComponentActivity() {
@@ -92,8 +96,20 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
 fun CalculatorApp() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "calculatorScreen") {
+        composable("calculatorScreen") { CalculatorScreen(navController) }
+        composable("secondScreen") { SecondScreen(navController) }
+    }
+}
+
+
+@Composable
+fun CalculatorScreen(navController: NavController) {
     var input by remember { mutableStateOf("") }
     var result by remember { mutableStateOf("") }
     var operator by remember { mutableStateOf("") }
@@ -150,7 +166,7 @@ fun CalculatorApp() {
                         when (button) {
 
                             "2nd" -> {
-
+                                navController.navigate("SecondScreen")
                             }
 
                             "<-" -> {
@@ -296,6 +312,114 @@ fun CalculatorApp() {
     }
 }
 
+@Composable
+fun SecondScreen(navController: NavController) {
+    var input by remember { mutableStateOf("") }
+    var result by remember { mutableStateOf("") }
+    var operator by remember { mutableStateOf("") }
+    var firstOperand by remember { mutableStateOf("") }
+    var history by remember { mutableStateOf(listOf<String>()) } // Store history
+    var clearPressedOnce by remember { mutableStateOf(false) } // Track first press
+    var calculationCompleted by remember { mutableStateOf(false) } // New flag to track if "=" was pressed
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // Title
+        Text(
+            text = "ECE 558 Calculator (2nd Mode)",
+            style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xFF00008B))
+                .padding(10.dp)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Display History Above Result Box
+        HistoryDisplay(history)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Display
+        Display(input = input, result = result, operator = operator, firstOperand = firstOperand)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Buttons (No Functionality)
+        val buttons = listOf(
+            "", "", "", "CH", "C",
+            "", "", "", "", "",
+            "", "7", "8", "9", "/",
+            "", "4", "5", "6", "+",
+            "", "1", "2", "3", "-",
+            "Back", "+/-", "0", ".", "=",
+        )
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(5),
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp)
+        ) {
+            items(buttons) { button ->
+                CalculatorButton(
+                    text = button,
+                    onClick = {
+                        when (button) {
+                            "+", "-", "*", "/" -> {
+                                if(calculationCompleted){
+                                    firstOperand = result
+                                    operator = button
+                                    input = ""
+                                    calculationCompleted = false
+                                }
+                                if (input.isNotEmpty()) {
+                                    operator = button
+                                    firstOperand = input
+                                    input = ""
+                                    calculationCompleted = false // Reset flag since we're in the middle of a calculation
+                                }
+                            }
+
+                            "CH" -> {
+                                if (!clearPressedOnce) {
+                                    // First press: Clear input, result, operator, firstOperand
+                                    input = ""
+                                    result = ""
+                                    operator = ""
+                                    firstOperand = ""
+                                    clearPressedOnce = true // Mark first press
+                                }
+                            }
+
+                            "C" -> {
+                                input = ""
+                                result = ""
+                                operator = ""
+                                firstOperand = ""
+                                calculationCompleted = false // Reset flag
+                                clearPressedOnce = true // Mark first press
+                            }
+
+                            "=" -> {
+                                if (input.isNotEmpty() && firstOperand.isNotEmpty() && operator.isNotEmpty()) {
+                                    result = calculate(firstOperand, input, operator)
+                                    history = history + "$firstOperand $operator $input = $result" // Add to history
+                                    calculationCompleted = true // Set flag to indicate completion
+                                }
+                            }
+
+                           "Back" -> navController.popBackStack() // Return to CalculatorScreen
+                        }
+                    }
+                )
+            }
+        }
+    }
+}
 
 @Composable
 fun HistoryDisplay(history: List<String>) {
