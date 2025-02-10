@@ -152,7 +152,7 @@ fun CalculatorScreen(navController: NavController) {
             "Cos", "7", "8", "9", "/",
             "Tan", "4", "5", "6", "+",
             "", "1", "2", "3", "-",
-            "", "+/-", "0", ".", "=",
+            "2nd", "+/-", "0", ".", "=",
         ) // 2nd Removed - under construction
         LazyVerticalGrid(
             columns = GridCells.Fixed(5),
@@ -473,7 +473,7 @@ fun Display(input: String, result: String, operator: String, firstOperand: Strin
         if (result.isNotEmpty()) {
             Text(
                 text = if (result == "Error") "Error" else result, // Show "Error" if needed
-                style = TextStyle(fontSize = 40.sp, fontWeight = FontWeight.Bold, color = Color.White),
+                style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White),
                 textAlign = TextAlign.End,
                 modifier = Modifier.fillMaxWidth()
             )
