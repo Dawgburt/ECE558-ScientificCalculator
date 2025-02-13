@@ -152,7 +152,7 @@ fun CalculatorScreen(navController: NavController) {
             "Cos", "7", "8", "9", "/",
             "Tan", "4", "5", "6", "+",
             "", "1", "2", "3", "-",
-            "2nd", "+/-", "0", ".", "=",
+            "", "+/-", "0", ".", "=",
         ) // 2nd Removed - under construction
         LazyVerticalGrid(
             columns = GridCells.Fixed(5),
@@ -227,7 +227,6 @@ fun CalculatorScreen(navController: NavController) {
                                 result = (input.toDoubleOrNull()?.let { sin(it) } ?: "Error").toString()
                                 history = history + "Sin($input) = $result"
                                 operator = button
-                                firstOperand = input
                                 calculationCompleted = true // Set flag after calculation
                             }
 
@@ -235,7 +234,6 @@ fun CalculatorScreen(navController: NavController) {
                                 result = (input.toDoubleOrNull()?.let { cos(it) } ?: "Error").toString()
                                 history = history + "Cos($input) = $result"
                                 operator = button
-                                firstOperand = input
                                 calculationCompleted = true // Set flag after calculation
                             }
 
@@ -282,6 +280,7 @@ fun CalculatorScreen(navController: NavController) {
                             "x^2" -> {
                                 result = (input.toDoubleOrNull()?.let { it * it } ?: "Error").toString()
                                 history = history + "$input^2 = $result"
+                                operator = button
                                 calculationCompleted = true // Set flag after calculation
                             }
 
@@ -422,7 +421,7 @@ fun SecondScreen(navController: NavController) {
                                 }
                             }
 
-                           "Back" -> navController.popBackStack() // Return to CalculatorScreen
+                            "Back" -> navController.popBackStack() // Return to CalculatorScreen
                         }
                     }
                 )
@@ -461,12 +460,19 @@ fun Display(input: String, result: String, operator: String, firstOperand: Strin
             .padding(16.dp),
         horizontalAlignment = Alignment.End
     ) {
-        // Construct dynamic display text
+// Construct dynamic display text with proper formatting for trigonometric functions
         val displayText = buildString {
-            if (firstOperand.isNotEmpty()) append(firstOperand)
-            if (operator.isNotEmpty()) append(" $operator ")
-            if (input.isNotEmpty()) append(input)
+            if (operator in listOf("Sin", "Cos", "Tan", "Log", "Ln", "√", "%")) {
+                append("$operator($input)")
+            } else if (operator in listOf("x^2")) {
+                append("$input^2")
+            } else {
+                if (firstOperand.isNotEmpty()) append(firstOperand)
+                if (operator.isNotEmpty()) append(" $operator ")
+                if (input.isNotEmpty()) append(input)
+            }
         }
+
 
         // Show the expression (only if it's not empty)
         if (displayText.isNotEmpty()) {
