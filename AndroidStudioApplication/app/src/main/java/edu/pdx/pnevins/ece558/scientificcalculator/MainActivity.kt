@@ -226,18 +226,24 @@ fun CalculatorScreen(navController: NavController) {
                             "Sin" ->{
                                 result = (input.toDoubleOrNull()?.let { sin(it) } ?: "Error").toString()
                                 history = history + "Sin($input) = $result"
+                                operator = button
+                                firstOperand = input
                                 calculationCompleted = true // Set flag after calculation
                             }
 
                             "Cos" -> {
                                 result = (input.toDoubleOrNull()?.let { cos(it) } ?: "Error").toString()
                                 history = history + "Cos($input) = $result"
+                                operator = button
+                                firstOperand = input
                                 calculationCompleted = true // Set flag after calculation
                             }
 
                             "Tan" -> {
                                 result = (input.toDoubleOrNull()?.let { tan(it) } ?: "Error").toString()
                                 history = history + "Tan($input) = $result"
+                                operator = button
+                                firstOperand = input
                                 calculationCompleted = true // Set flag after calculation
 
                             }
@@ -245,18 +251,21 @@ fun CalculatorScreen(navController: NavController) {
                             "%" -> {
                                 result = (input.toDoubleOrNull()?.div(100) ?: "Error").toString()
                                 history = history + "$input% = $result"
+                                operator = button
                                 calculationCompleted = true // Set flag after calculation
                             }
 
                             "Log" -> {
                                 result = (input.toDoubleOrNull()?.let { log10(it) } ?: "Error").toString()
                                 history = history + "log($input) = $result"
+                                operator = button
                                 calculationCompleted = true // Set flag after calculation
                             }
 
                             "Ln" -> {
                                 result = (input.toDoubleOrNull()?.let { ln(it) } ?: "Error").toString()
                                 history = history + "ln($input) = $result"
+                                operator = button
                                 calculationCompleted = true // Set flag after calculation
                             }
 
@@ -265,6 +274,7 @@ fun CalculatorScreen(navController: NavController) {
                                     if (it >= 0) sqrt(it).toString() else "Error" // Ensure non-negative values only
                                 } ?: "Error" // Show "Error" if input is invalid
                                 history = history + "√$input = $result"
+                                operator = button
                                 calculationCompleted = true // Set flag after calculation
                             }
 
