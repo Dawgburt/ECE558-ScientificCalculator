@@ -26,8 +26,9 @@
  * Date Created: 1/25/2025
  *
  * Notes:
- * 1-25-2025  PN  Project created to experiment with Jetpack Compose via templates from ChatGPT
- * 2-8-2025  PN  Added Sin, Cos, Tan, Log, Ln, and % functions
+ * 1-25-2025    PN      Project created to experiment with Jetpack Compose via templates from ChatGPT
+ * 2-8-2025     PN      Added Sin, Cos, Tan, Log, Ln, and % functions
+ * 2-12-2025    PN      Finished implementing all functions, debugged issues and made final APK file
  */
 
 package edu.pdx.pnevins.ece558.scientificcalculator
@@ -165,6 +166,7 @@ fun CalculatorScreen(navController: NavController) {
                     onClick = {
                         when (button) {
 
+                            // Removed for release apk version
                             "2nd" -> {
                                 navController.navigate("SecondScreen")
                             }
@@ -276,7 +278,6 @@ fun CalculatorScreen(navController: NavController) {
                                 calculationCompleted = true // Set flag after calculation
                             }
 
-
                             "x^2" -> {
                                 result = (input.toDoubleOrNull()?.let { it * it } ?: "Error").toString()
                                 history = history + "$input^2 = $result"
@@ -321,6 +322,7 @@ fun CalculatorScreen(navController: NavController) {
     }
 }
 
+//UNDER CONSTRUCTION. CODE LEFT IN PLACE FOR REFERENCE AND FUTURE WORK
 @Composable
 fun SecondScreen(navController: NavController) {
     var input by remember { mutableStateOf("") }
@@ -502,6 +504,7 @@ fun Display(input: String, result: String, operator: String, firstOperand: Strin
 @Composable
 fun CalculatorButton(text: String, onClick: () -> Unit) {
     val buttonColor = when (text) {
+        //Was having issues declaring color codes in Color.kt, so explicitly defined here
         "+", "-", "*", "/", "=", "%", "x^2", "Log", "Sqrt", "√", "Sin", "Cos", "Tan", "Ln" -> Color(0xFF00008B) // Dark Blue
         "+/-", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" -> Color(0xFF000066) // Darker Navy Blue
         "CH", "C" -> Color(0xFF8A0707) // Blood Red
@@ -523,7 +526,7 @@ fun CalculatorButton(text: String, onClick: () -> Unit) {
     }
 }
 
-
+//Helper Function
 fun calculate(firstOperand: String, secondOperand: String, operator: String): String {
     val num1 = firstOperand.toDoubleOrNull() ?: return "Error"
     val num2 = secondOperand.toDoubleOrNull() ?: return "Error"
